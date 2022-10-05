@@ -1,0 +1,19 @@
+{
+    "name": "dnl6c/php_framework",
+    "description": "creation_framework_poo_php",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Dnl6c\\PhpFramework\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "dan6c77",
+            "email": "dan6c77@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
