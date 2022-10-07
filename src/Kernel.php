@@ -45,7 +45,12 @@ use Symfony\Component\HttpFoundation\Response;
         // @return void Response
         
         public function handleRequest(): Response {
+            // le noyau récupère le routeur depuis le conteneur de dépendances ---
             $router = $this->container->get(RouterInterface::class);
-            dd($router);
+
+            // le noyau demande au routeur de s'exécuter
+            // puis le routeur retourne la réponse au noyau ---
+            $router_response = $router->run();
+            dd($router_response);
         }
     }

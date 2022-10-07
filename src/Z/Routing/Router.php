@@ -2,25 +2,29 @@
 
 namespace App\Z\Routing;
 
+use App\Z\Routing\Route;
 use App\Z\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class Router implements RouterInterface {
 
-    /**Cette propriété contient le tableau des ROUTES.
+    /** Cette propriété contient le tableau des ROUTES.
      * @var array */
     private array $routes = [];
 
-    /**Cette propriété contient les paramètres de la barre d'url, s'il y en a.
+    /** Cette propriété contient les paramètres de la barre d'url, s'il y en a.
      * @var array */
     private array $parameters = [];
 
+    /** Cette propriété représente l'objet REQUEST. */
+    private $request;
+
 
     public function __construct(Request $request, array $controllers) {
+        $this->request = $request;
         $this->sortRoutesByName($controllers);
     }
 
-    //  * Cette méthode du routeur récupère les contrôleurs,
     //  * les trie et les sauvegarde dans l'armoire à routes
     //  * en fonction de leur nom.
     //  *
@@ -54,6 +58,37 @@ class Router implements RouterInterface {
     // @return array|null
 
     public function run() : ?array {
-
+        // dd($this->routes);
+        foreach ($this->routes as $route) {
+            if ( $this->matchWith($this->request->server->get('REQUEST_URI'), $route['route']->getPath()) ) {
+                if ( isset($this->parameters) && !empty($this->parameters) ) {
+                    return [
+                        "route" => $route,
+                        "parameters" => $this->parameters
+                    ];
+                } else {
+                    return [
+                        "route" => $route,
+                    ];
+                }
+            }
+        }
+        return null;
     }
+
+    public function matchWith($uri_url, $uri_route)
+    {
+        $pattern = preg_replace("#{[a-z]+}#", "([0-9a-zA-Z-_]+)", $uri_route);
+        $pattern = "#^$pattern$#";
+
+        if ( preg_match($pattern, $uri_url, $matches) ) 
+        {
+            array_shift($matches);
+            $this->parameters = $matches;
+            return true;
+        }
+
+        return false;
+    }
+
 }

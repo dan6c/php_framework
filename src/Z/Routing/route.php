@@ -22,8 +22,8 @@ use App\Z\Routing\RouteInterface;
 
 
         /** Cette propriété représente les méthodes de la route
-         * @var string */
-        private string $methods;
+         * @var array */
+        private array $methods;
 
 
         /** A chaque fois qu'une route est créée, 
