@@ -22,11 +22,10 @@ use App\Kernel;
     $kernel = new Kernel($container);
     // si $app = new App\Kernel(); ne pas faire faire d'import (use...) ---
     
-
     //  Le frontController demande au noyau de soummetrre la requête
     //  et de récupérer la réponse correspondante
     $response = $kernel->handleRequest();
-    dd($router);
-
+    // dd($router);
 
     // Envoi de la réponse au navigateur
+    $response->send();
